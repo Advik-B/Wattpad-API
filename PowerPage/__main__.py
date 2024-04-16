@@ -1,6 +1,7 @@
-import requests
-from .errors import CacheLibNotFound
 from dataclasses import dataclass
+
+from .errors import CacheLibNotFound
+
 
 @dataclass
 class Wattpad:
@@ -20,9 +21,9 @@ class Wattpad:
                 ) from e
 
 
-
 def main():
     wpad = Wattpad()
+
 
 if __name__ == "__main__":
     main()
