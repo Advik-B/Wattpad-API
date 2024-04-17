@@ -38,6 +38,7 @@ class Story:
 
     @staticmethod
     def from_json_part(json: dict):
+        raise NotImplementedError("This feature is not yet implemented, please use 'from_json_story' instead")
         json = json['group']
         return Story(
 
