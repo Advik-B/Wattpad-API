@@ -11,5 +11,5 @@ class PublishedPart:
     def from_json(json: dict) -> "PublishedPart":
         return PublishedPart(
             id=int(json['id']),
-            
+            createDate=datetime.strptime(json["createDate"], "%Y-%m-%dT%H:%M:%SZ")
         )
