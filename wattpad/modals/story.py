@@ -7,7 +7,6 @@ from ..backend import Wattpad
 
 @dataclass
 class Story:
-    text_url: str
     id: int
     title: str
     user: User
@@ -20,7 +19,21 @@ class Story:
     isPaywalled: bool
 
     @staticmethod
-    def from_json(json: dict):
+    def from_json_story(json: dict):
         return Story(
-            
+            id=json['id'],
+            title=json['title'],
+            user=User.from_json(json['user']),
+            description=json['description'],
+            cover=json['cover'],
+            tags=json['tags'],
+            url=json['url'],
+            lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
+            parts=(
+                Part.from_json(x)
+                for x in json['parts']
+            ),
+            isPaywalled=json['isPaywalled']
         )
+
+    
