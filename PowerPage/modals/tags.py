@@ -1,1 +1,0 @@
-type Tags = list[str]
