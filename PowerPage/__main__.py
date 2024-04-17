@@ -59,7 +59,6 @@ class Wattpad:
 
 def main():
     wpad = Wattpad(use_cache=False)
-    print(CERTFILE)
     url = "https://www.wattpad.com"
     print(urljoin(url, "v4/parts"))
 
