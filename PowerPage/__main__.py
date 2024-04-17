@@ -33,7 +33,7 @@ class Wattpad:
                     "either install it using pip or set use_cache=False"
                 ) from e
 
-    def _fetch(self, path: str, query: dict) -> dict:
+    def _fetch(self, path: str, query: dict, jayson=True) -> dict | str:
         response = get(
             urljoin(self.base_url, path),
             verify=True,
@@ -41,18 +41,21 @@ class Wattpad:
             params=query
         )
         print(urljoin(self.base_url, path))
-        return response.json()
+        if jayson:
+            return response.json()
+        else:
+            return response.text
 
-    def fetch(self, path: str, query: dict = None) -> dict:
+    def fetch(self, path: str, query: dict = None, expect_json=True) -> dict | str:
         if query is None:
-            query = DEFAULT_QUERY
+            query = {}
         if not self.use_cache:
-            return self._fetch(path, query)
+            return self._fetch(path, query, jayson=expect_json)
         response: dict  # for type checking
         if response := self.cache_obj.get(path) is not None:
             return response
 
-        response = self._fetch(path, query)
+        response = self._fetch(path, query, jayson=expect_json)
         self.cache_obj[path] = response
         return response
 
@@ -63,6 +66,10 @@ def main():
     print(urljoin(url, "v4/parts"))
 
     print(wpad.fetch("v4/parts/1321853334"))
+    print(wpad.fetch(
+        "apiv2/?m=storytext&id=1403666784&page=",
+        expect_json=False
+    ))
 
 
 if __name__ == "__main__":
