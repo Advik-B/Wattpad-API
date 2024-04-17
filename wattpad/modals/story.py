@@ -36,4 +36,9 @@ class Story:
             isPaywalled=json['isPaywalled']
         )
 
-    
+    @staticmethod
+    def from_json_part(json: dict):
+        json = json['group']
+        return Story(
+
+        )
