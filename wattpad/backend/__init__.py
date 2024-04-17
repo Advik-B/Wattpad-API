@@ -1,1 +1,1 @@
-from .core import WattpadEngine
+from .core import Wattpad
