@@ -10,7 +10,7 @@ DEFAULT_QUERY = {
 }
 
 @dataclass
-class WattpadEngine:
+class Wattpad:
     base_url: str = "https://www.wattpad.com"
     use_cache: bool = True
     user_agent: str = (
