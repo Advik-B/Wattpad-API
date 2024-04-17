@@ -1,6 +1,7 @@
-from .backend import WattpadEngine
-
-
-__all__ = [
-    "WattpadEngine"
-]
+from .backend import Wattpad
+from .modals import (
+    Story,
+    User,
+    PublishedPart,
+    Part,
+)
