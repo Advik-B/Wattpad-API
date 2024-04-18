@@ -26,7 +26,7 @@ class Story:
             user=User.from_json(json['user']),
             description=json['description'],
             cover=json['cover'],
-            tags=json['tag'],
+            tags=json['tags'],
             url=json['url'],
             lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
             parts=[
