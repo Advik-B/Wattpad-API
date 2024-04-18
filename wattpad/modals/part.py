@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .rendered_part_skeleton import RenderedPage
+from .rendered_part_skeleton import RenderedPage, HTML, HTMLtags
 from ..backend import Wattpad
 from bs4 import BeautifulSoup
 
@@ -17,5 +17,38 @@ class Part:
             text_url=json['text_url']['text']
         )
 
-    def render(self, wattpad: Wattpad) -> RenderedPage:
-        print(self.text_url)
+    def render_with(self, wattpad_engine: Wattpad) -> RenderedPage:
+        api_path = self.text_url.removeprefix(wattpad_engine.base_url)
+        data = wattpad_engine.fetch(api_path, expect_json=False)
+        html = BeautifulSoup(data, 'html.parser')
+        stack: list[HTML] = []
+        for p_tag in html.find_all('p'):
+            if image := p_tag.find('img'):
+                stack.append(
+                    HTML(
+                        data=image['src'],
+                        tag=HTMLtags.image,
+                    )
+                )
+            else:
+                text_content = ""
+                for element in p_tag.contents:
+                    if isinstance(element, str):
+                        text_content += element.strip()
+                    else:
+                        if element.name == "b":
+                            text_content += "<b>" + element.get_text(strip=True) + "</b>"
+                        elif element.name == "i":
+                            text_content += "<i>" + element.get_text(strip=True) + "</i>"
+                        else:
+                            text_content += element.get_text(strip=True)
+                stack.append(
+                    HTML(
+                        data=text_content,
+                        tag=HTMLtags.paragraph,
+                    )
+                )
+        return RenderedPage(
+            title=self.title,
+            stack=stack
+        )
