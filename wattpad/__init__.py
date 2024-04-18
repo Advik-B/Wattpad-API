@@ -6,5 +6,5 @@ from .modals import (
     Part,
     RenderedPage,
     HTML,
-    HTMLtags,
+    HTMLtypes,
 )
