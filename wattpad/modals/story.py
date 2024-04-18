@@ -26,7 +26,7 @@ class Story:
             user=User.from_json(json['user']),
             description=json['description'],
             cover=json['cover'],
-            tags=json['tags'],
+            tags=json['tag'],
             url=json['url'],
             lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
             parts=[
@@ -37,8 +37,8 @@ class Story:
         )
 
     @staticmethod
-    def from_id(id: int, wattpad: Wattpad):
-        data = wattpad.fetch(
+    def from_id(id: int, wattpad_engine: Wattpad):
+        data = wattpad_engine.fetch(
             f"api/v3/stories/{id}",
             {
                 'fields':""
@@ -51,8 +51,13 @@ class Story:
                   "user(name,username,avatar),"
                   "lastPublishedPart,"
                   "parts(id,title,text_url),"
-                  "tags"
+                  "tag"
              },
             expect_json=True
         )
         return Story.from_json_story(data)
+
+
+    def __post_init__(self):
+        # Process the url to remove the unnecessary shit
+        self.url = self.url.rsplit('-')[0]
