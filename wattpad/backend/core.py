@@ -39,7 +39,7 @@ class Wattpad:
             headers={"User-Agent": self.user_agent},
             params=query
         )
-        print(urljoin(self.base_url, path))
+        # print(urljoin(self.base_url, path))
         if jayson:
             return response.json()
         else:
@@ -51,7 +51,7 @@ class Wattpad:
         if not self.use_cache:
             return self._fetch(path, query, jayson=expect_json)
         response: dict  # for type checking
-        if response := self.cache_obj.get(path) is not None:
+        if response := self.cache_obj.get(path):
             return response
 
         response = self._fetch(path, query, jayson=expect_json)
