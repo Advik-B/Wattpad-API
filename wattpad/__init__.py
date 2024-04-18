@@ -4,4 +4,7 @@ from .modals import (
     User,
     PublishedPart,
     Part,
+    RenderedPage,
+    HTML,
+    HTMLtags,
 )
