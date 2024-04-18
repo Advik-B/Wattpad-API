@@ -37,9 +37,22 @@ class Story:
         )
 
     @staticmethod
-    def from_json_part(json: dict):
-        raise NotImplementedError("This feature is not yet implemented, please use 'from_json_story' instead")
-        json = json['group']
-        return Story(
-
+    def from_id(id: int, wattpad: Wattpad):
+        data = wattpad.fetch(
+            f"api/v3/stories/{id}",
+            {
+                'fields':""
+                  "id,"
+                  "title,"
+                  "description,"
+                  "url,"
+                  "cover,"
+                  "isPaywalled,"
+                  "user(name,username,avatar),"
+                  "lastPublishedPart,"
+                  "parts(id,title,text_url),"
+                  "tags"
+             },
+            expect_json=True
         )
+        return Story.from_json_story(data)
