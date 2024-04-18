@@ -22,3 +22,6 @@ class RenderedPage:
 
     def __getitem__(self, index):
         return self.stack[index]
+
+    def __iter__(self):
+        return iter(self.stack)
