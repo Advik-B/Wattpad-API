@@ -29,10 +29,10 @@ class Story:
             tags=json['tags'],
             url=json['url'],
             lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
-            parts=(
+            parts=[
                 Part.from_json(x)
                 for x in json['parts']
-            ),
+            ],
             isPaywalled=json['isPaywalled']
         )
 
