@@ -11,3 +11,4 @@ render: RenderedPage = last_part.render_with(w)
 
 print(s.title)
 print(s.url)
+print(render[0].sanitized())
