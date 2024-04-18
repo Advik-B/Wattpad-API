@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from .rendered_part_skeleton import RenderedPage
+from ..backend import Wattpad
+from bs4 import BeautifulSoup
 
 @dataclass
 class Part:
@@ -13,3 +16,6 @@ class Part:
             title=json['title'],
             text_url=json['text_url']['text']
         )
+
+    def render(self, wattpad: Wattpad) -> RenderedPage:
+        print(self.text_url)
