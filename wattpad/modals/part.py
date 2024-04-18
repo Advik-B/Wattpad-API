@@ -27,7 +27,7 @@ class Part:
                 stack.append(
                     HTML(
                         data=image['src'],
-                        tag=HTMLtags.image,
+                        type=HTMLtags.image,
                     )
                 )
             else:
@@ -45,7 +45,7 @@ class Part:
                 stack.append(
                     HTML(
                         data=text_content,
-                        tag=HTMLtags.paragraph,
+                        type=HTMLtags.paragraph,
                     )
                 )
         return RenderedPage(
