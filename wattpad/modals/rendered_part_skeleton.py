@@ -1,5 +1,6 @@
 from enum import Enum
 from dataclasses import dataclass
+import re
 
 class HTMLtags(Enum):
     paragraph = 1
@@ -8,7 +9,11 @@ class HTMLtags(Enum):
 @dataclass
 class HTML:
     data: str
-    tag: HTMLtags
+    type: HTMLtags
+
+    def sanitized(self) -> str:
+        return re.sub(r'<[^>]*>', '', self.data)
+
 
 @dataclass
 class RenderedPage:
