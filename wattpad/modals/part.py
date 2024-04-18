@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .rendered_part_skeleton import RenderedPage, HTML, HTMLtags
+from .rendered_part_skeleton import RenderedPage, HTML, HTMLtypes
 from ..backend import Wattpad
 from bs4 import BeautifulSoup
 
@@ -27,7 +27,7 @@ class Part:
                 stack.append(
                     HTML(
                         data=image['src'],
-                        type=HTMLtags.image,
+                        type=HTMLtypes.image,
                     )
                 )
             else:
@@ -45,7 +45,7 @@ class Part:
                 stack.append(
                     HTML(
                         data=text_content,
-                        type=HTMLtags.paragraph,
+                        type=HTMLtypes.text,
                     )
                 )
         return RenderedPage(
