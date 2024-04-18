@@ -1,15 +1,19 @@
-from enum import Enum
-from dataclasses import dataclass
 import re
+from dataclasses import dataclass
+from enum import Enum
+from io import TextIOWrapper
+from sys import stdout
 
-class HTMLtags(Enum):
-    paragraph = 1
+
+class HTMLtypes(Enum):
+    text = 1
     image = 2
+
 
 @dataclass
 class HTML:
     data: str
-    type: HTMLtags
+    type: HTMLtypes
 
     def sanitized(self) -> str:
         return re.sub(r'<[^>]*>', '', self.data)
@@ -25,3 +29,12 @@ class RenderedPage:
 
     def __iter__(self):
         return iter(self.stack)
+
+    def display(self, buffer: TextIOWrapper = stdout):
+        buffer.write('=' * 80 + '\n')
+        buffer.write(self.title + '\n')
+        buffer.write('=' * 80 + '\n')
+        buffer.write('\n')
+        for line in self.stack:
+            if line.type == HTMLtypes.text:
+                buffer.write(line.sanitized() + '\n')
