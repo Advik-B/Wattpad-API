@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 
 DEFAULT_QUERY = {
     "fields": "text_url,group(id,title,description,isPaywalled,url,cover,user(name,username,avatar),lastPublishedPart,"
-              "parts(id,title,text_url),tags)"
+              "parts(id,title,text_url),tag)"
 
 }
 
@@ -46,6 +46,9 @@ class Wattpad:
             return response.text
 
     def fetch(self, path: str, query: dict = None, expect_json=True) -> dict | str:
+        if path.startswith('/'):
+            path = path.removeprefix('/')
+
         if query is None:
             query = {}
         if not self.use_cache:
