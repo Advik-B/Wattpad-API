@@ -14,3 +14,6 @@ class HTML:
 class RenderedPage:
     title: str
     stack: list[HTML]
+
+    def __getitem__(self, index):
+        return self.stack[index]
