@@ -37,11 +37,11 @@ class Part:
                         text_content.append(HTMLword(element.strip(), style=HTMLStyle.general))
                     else:
                         if element.name == "b":
-                            text_content.append(HTMLword(element.get_text(strip=True), HTMLStyle.bold))
+                            text_content.append(HTMLword(element.get_text(), HTMLStyle.bold))
                         elif element.name == "i":
-                            text_content.append(HTMLword(element.get_text(strip=True), HTMLStyle.itialic))
+                            text_content.append(HTMLword(element.get_text(), HTMLStyle.itialic))
                         else:
-                            text_content.append(HTMLword(element.get_text(strip=True), style=HTMLStyle.general))
+                            text_content.append(HTMLword(element.get_text(), style=HTMLStyle.general))
                 stack.append(
                     HTML(
                         data=text_content,
