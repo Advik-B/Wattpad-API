@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from .rendered_part_skeleton import RenderedPage, HTML, HTMLtypes
+from .rendered_part_skeleton import RenderedPage, HTML, HTMLtypes, HTMLword, HTMLStyle
 from ..backend import Wattpad
 from bs4 import BeautifulSoup
 
@@ -31,17 +31,17 @@ class Part:
                     )
                 )
             else:
-                text_content = ""
+                text_content: list[HTMLword] = []
                 for element in p_tag.contents:
                     if isinstance(element, str):
-                        text_content += element.strip()
+                        text_content.append(HTMLword(element.strip(), style=HTMLStyle.general))
                     else:
                         if element.name == "b":
-                            text_content += "<b>" + element.get_text(strip=True) + "</b>"
+                            text_content.append(HTMLword(element.get_text(strip=True), HTMLStyle.bold))
                         elif element.name == "i":
-                            text_content += "<i>" + element.get_text(strip=True) + "</i>"
+                            text_content.append(HTMLword(element.get_text(strip=True), HTMLStyle.itialic))
                         else:
-                            text_content += element.get_text(strip=True)
+                            text_content.append(HTMLword(element.get_text(strip=True), style=HTMLStyle.general))
                 stack.append(
                     HTML(
                         data=text_content,
