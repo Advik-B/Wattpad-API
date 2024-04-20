@@ -1,0 +1,13 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": 3.12,
+      "toolsToInstall": "pyline,virualenv,certifi",
+      "optimise":true,
+      "enabledShared":true
+    },
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  }
+}
