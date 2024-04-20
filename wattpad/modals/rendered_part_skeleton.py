@@ -30,7 +30,7 @@ class HTML:
     data: list[HTMLword]
     type: HTMLtypes
 
-    def sanitized(self) -> str:
+    def format_for_console(self) -> str:
         s = ""
         for word in self.data:
             if word.style == HTMLStyle.bold:
@@ -60,4 +60,4 @@ class RenderedPage:
         buffer.write('\n')
         for line in self.stack:
             if line.type == HTMLtypes.text:
-                buffer.write(line.sanitized() + '\n')
+                buffer.write(line.format_for_console() + '\n')
