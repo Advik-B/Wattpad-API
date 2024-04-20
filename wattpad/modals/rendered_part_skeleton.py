@@ -10,13 +10,36 @@ class HTMLtypes(Enum):
     image = 2
 
 
+class HTMLStyle(Enum):
+    general = 1
+    itialic = 2
+    bold = 3
+
+@dataclass
+class HTMLword:
+    data: str
+    style: HTMLStyle
+
+class TextFormat:
+    BOLD = '\033[1m'
+    ITALIC = '\033[3m'
+    RESET = '\033[0m'
+
 @dataclass
 class HTML:
-    data: str
+    data: list[HTMLword]
     type: HTMLtypes
 
     def sanitized(self) -> str:
-        return re.sub(r'<[^>]*>', '', self.data)
+        s = ""
+        for word in self.data:
+            if word.style == HTMLStyle.bold:
+                s += TextFormat.BOLD + word.data + TextFormat.RESET
+            elif word.style == HTMLStyle.itialic:
+                s += TextFormat.ITALIC + word.data + TextFormat.RESET
+            else:
+                s += word.data
+        return s
 
 
 @dataclass
