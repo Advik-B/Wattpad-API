@@ -8,4 +8,5 @@ print(story.description)
 
 for part in story.parts:
     part.render_with(wattpad_engine).display()
+    print(part.id)
 
