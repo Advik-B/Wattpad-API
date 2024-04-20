@@ -52,7 +52,9 @@ class Wattpad:
         if query is None:
             query = {}
         
-        def handle_response(response: dict) -> dict:
+        def handle_response(response: dict | str) -> dict:
+            if type(response) != dict: # Don't fuck with other stuff    
+                return response
             if response.get('error_code', None) == 1017:
                 raise NotFoundError(response)
             return response
