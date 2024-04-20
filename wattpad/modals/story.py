@@ -12,7 +12,6 @@ class Story:
     user: User
     description: str
     cover: str
-    tags: Tags
     url: str
     lastPublishedPart: PublishedPart
     parts: tuple[Part]
@@ -26,7 +25,6 @@ class Story:
             user=User.from_json(json['user']),
             description=json['description'],
             cover=json['cover'],
-            tags=json['tags'],
             url=json['url'],
             lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
             parts=[
