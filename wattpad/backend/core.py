@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from ..errors import CacheLibNotFound
+from ..errors import CacheLibNotFound, NotFoundError
 from requests import get
 from urllib.parse import urljoin
 
@@ -51,12 +51,19 @@ class Wattpad:
 
         if query is None:
             query = {}
+        
+        def handle_response(response: dict) -> dict:
+            if response.get('error_code', None) == 1017:
+                raise NotFoundError(response)
+            return response
+        
         if not self.use_cache:
-            return self._fetch(path, query, jayson=expect_json)
+            response = self._fetch(path, query, jayson=expect_json)
+            return handle_response(response)
         response: dict  # for type checking
         if response := self.cache_obj.get(path):
-            return response
+            return handle_response(response)
 
         response = self._fetch(path, query, jayson=expect_json)
         self.cache_obj[path] = response
-        return response
+        return handle_response(response)
