@@ -1,4 +1,5 @@
 from wattpad import Wattpad, Story, RenderedPage
+from random import choice
 
 w = Wattpad(use_cache=True)
 # s = Story.from_id(362914687, w)  # Owned by him
@@ -7,17 +8,12 @@ s = Story.from_id(336166598, w)
 
 
     
-# last_part = s.parts[-1]
-# render: RenderedPage = last_part.render_with(w)
+random_part = choice(s.parts)
+random_render: RenderedPage = random_part.render_with(w)
 
-# # print(*w.cache_obj.iterkeys(), sep='\n')
+# print(*w.cache_obj.iterkeys(), sep='\n')
 
 print(s.title)
 print(s.url)
 
-# render.display()
-
-for part in s.parts:
-    part.render_with(w).display()
-    # print(part.text_url)
-    # print(part.id)
+random_render.display()
