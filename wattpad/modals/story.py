@@ -4,6 +4,7 @@ from .tags import Tags
 from .published_part import PublishedPart
 from .part import Part
 from ..backend import Wattpad
+import json
 
 @dataclass
 class Story:
@@ -16,6 +17,7 @@ class Story:
     lastPublishedPart: PublishedPart
     parts: tuple[Part]
     isPaywalled: bool
+    tags: Tags
 
     @staticmethod
     def from_json_story(json: dict):
@@ -31,30 +33,72 @@ class Story:
                 Part.from_json(x)
                 for x in json['parts']
             ],
-            isPaywalled=json['isPaywalled']
+            isPaywalled=json['isPaywalled'],
+            tags=json['tags']
         )
 
     @staticmethod
-    def from_id(id: int, wattpad_engine: Wattpad):
+    def from_json_part(json: dict):
+        json = json['group']
+        return Story(
+            id=json['id'],
+            title=json['title'],
+            user=User.from_json(json['user']),
+            description=json['description'],
+            cover=json['cover'],
+            url=json['url'],
+            lastPublishedPart=PublishedPart.from_json(json['lastPublishedPart']),
+            parts=[
+                Part.from_json(x)
+                for x in json['parts']
+            ],
+            isPaywalled=json['isPaywalled'],
+            tags=json['tags']
+        )
+
+    @staticmethod
+    def from_id(id: int, wattpad_engine: Wattpad) -> 'Story':
         data = wattpad_engine.fetch(
             f"api/v3/stories/{id}",
             {
-                'fields':""
-                  "id,"
-                  "title,"
-                  "description,"
-                  "url,"
-                  "cover,"
-                  "isPaywalled,"
-                  "user(name,username,avatar),"
-                  "lastPublishedPart,"
-                  "parts(id,title,text_url),"
-                  "tag"
-             },
+                'fields': ""
+                          "id,"
+                          "title,"
+                          "description,"
+                          "url,"
+                          "cover,"
+                          "isPaywalled,"
+                          "user(name,username,avatar),"
+                          "lastPublishedPart,"
+                          "parts(id,title,text_url),tags"
+            },
             expect_json=True
         )
         return Story.from_json_story(data)
 
+    @staticmethod
+    def from_partid(partid: int, wattpad_engine: Wattpad) -> 'Story':
+        data = wattpad_engine.fetch(
+            f"api/v3/parts/{partid}",
+            {
+                'fields': "text_url,"
+                          "group"
+                          "("
+                          "id,"
+                          "title,"
+                          "description,"
+                          "isPaywalled,"
+                          "url,"
+                          "cover,"
+                          "user(name,username,avatar),"
+                          "lastPublishedPart,"
+                          "parts(id,title,text_url),"
+                          "tags"
+                          ")"
+            },
+            expect_json=True
+        )
+        return Story.from_json_part(data)
 
     def __post_init__(self):
         # Process the url to remove the unnecessary shit
