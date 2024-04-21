@@ -69,3 +69,7 @@ class Wattpad:
         response = self._fetch(path, query, jayson=expect_json)
         self.cache_obj[path] = response
         return handle_response(response)
+
+    def clear_cache(self):
+        if self.use_cache:
+            self.cache_obj.clear()
