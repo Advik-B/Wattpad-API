@@ -1,17 +1,13 @@
 from dataclasses import dataclass
-from ..errors import CacheLibNotFound, NotFoundError
+from ..errors import CacheLibNotFound, APIerror, NotJsonError, NotFoundError
 from requests import get
+from requests.exceptions import  JSONDecodeError
 from urllib.parse import urljoin
-
-DEFAULT_QUERY = {
-    "fields": "text_url,group(id,title,description,isPaywalled,url,cover,user(name,username,avatar),lastPublishedPart,"
-              "parts(id,title,text_url),tag)"
-
-}
+from .query_builder import BASE_URL
 
 @dataclass
 class Wattpad:
-    base_url: str = "https://www.wattpad.com"
+    base_url: str = BASE_URL
     use_cache: bool = True
     user_agent: str = (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -39,9 +35,13 @@ class Wattpad:
             headers={"User-Agent": self.user_agent},
             params=query
         )
-        # print(urljoin(self.base_url, path))
+        if response.status_code == 404:
+            raise NotFoundError(response.url)
         if jayson:
-            return response.json()
+            try:
+                return response.json()
+            except JSONDecodeError as e:
+                raise NotJsonError(response.content.decode('utf-8')) from e
         else:
             return response.text
 
@@ -55,8 +55,10 @@ class Wattpad:
         def handle_response(response: dict | str) -> dict:
             if type(response) != dict: # Don't fuck with other stuff    
                 return response
-            if response.get('error_code', None) == 1017:
-                raise NotFoundError(response)
+            if response.get('error_code', None):
+                this = APIerror(response)
+                this.add_note("Raised due to API response handler")
+                raise this
             return response
         
         if not self.use_cache:
