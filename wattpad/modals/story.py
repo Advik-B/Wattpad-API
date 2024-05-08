@@ -10,7 +10,7 @@ import json
 class Story:
     id: int
     title: str
-    user: User
+    author: User
     description: str
     cover: str
     url: str
@@ -24,7 +24,7 @@ class Story:
         return Story(
             id=json['id'],
             title=json['title'],
-            user=User.from_json(json['user']),
+            author=User.from_json(json['user']),
             description=json['description'],
             cover=json['cover'],
             url=json['url'],
@@ -43,7 +43,7 @@ class Story:
         return Story(
             id=json['id'],
             title=json['title'],
-            user=User.from_json(json['user']),
+            author=User.from_json(json['user']),
             description=json['description'],
             cover=json['cover'],
             url=json['url'],
@@ -67,8 +67,9 @@ class Story:
                           "description,"
                           "url,"
                           "cover,"
+                          "user,"
                           "isPaywalled,"
-                          "user(name,username,avatar),"
+                          "author(name,username,avatar),"
                           "lastPublishedPart,"
                           "parts(id,title,text_url),tags"
             },
@@ -79,7 +80,7 @@ class Story:
     @staticmethod
     def from_partid(partid: int, wattpad_engine: Wattpad) -> 'Story':
         data = wattpad_engine.fetch(
-            f"api/v3/parts/{partid}",
+            f"api/v4/parts/{partid}",
             {
                 'fields': "text_url,"
                           "group"
@@ -90,7 +91,7 @@ class Story:
                           "isPaywalled,"
                           "url,"
                           "cover,"
-                          "user(name,username,avatar),"
+                          "author(name,username,avatar),"
                           "lastPublishedPart,"
                           "parts(id,title,text_url),"
                           "tags"
