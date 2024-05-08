@@ -41,6 +41,12 @@ class HTML:
                 s += word.data
         return s
 
+    def sanitize(self) -> str:
+        return "".join([word.data for word in self.data])
+
+    def __str__(self):
+        return self.sanitize()
+
 
 @dataclass
 class RenderedPage:
@@ -54,6 +60,14 @@ class RenderedPage:
         return iter(self.stack)
 
     def display(self, buffer: TextIOWrapper = stdout):
+        """
+        Display the rendered page in the console (using ANSI escape codes)
+        Args:
+            buffer: The buffer to write to. Defaults to stdout.
+
+        Returns: None
+
+        """
         buffer.write('=' * 80 + '\n')
         buffer.write(self.title + '\n')
         buffer.write('=' * 80 + '\n')
