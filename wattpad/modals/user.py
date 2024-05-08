@@ -8,6 +8,13 @@ class User:
 
     @staticmethod
     def from_json(json: dict):
+        if json.get("fullname"):
+            return User(
+                name=json["fullname"],
+                avatar=json["avatar"],
+                username=json["name"]
+            )
+
         return User(
             name=json["name"],
             avatar=json["avatar"],
