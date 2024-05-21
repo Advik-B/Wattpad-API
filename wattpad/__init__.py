@@ -8,3 +8,4 @@ from .modals import (
     HTML,
     HTMLtypes,
 )
+VERSION = "1.0.0"
