@@ -1,1 +1,1 @@
-type Tags = list[str]
+Tags = list[str]
