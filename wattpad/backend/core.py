@@ -9,6 +9,7 @@ from .query_builder import BASE_URL
 class Wattpad:
     base_url: str = BASE_URL
     use_cache: bool = True
+    cache_dir: str = "capacitor"
     user_agent: str = (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
         "AppleWebKit/537.36 "
@@ -20,7 +21,7 @@ class Wattpad:
         if self.use_cache:
             try:
                 from diskcache import Cache
-                self.cache_obj = Cache("capacitor")
+                self.cache_obj = Cache(self.cache_dir)
             except (ImportError, ModuleNotFoundError) as e:
                 print("😂🫵🏻", flush=False)
                 raise CacheLibNotFound(
